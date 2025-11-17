@@ -246,7 +246,7 @@ void processFile(const char* filename, int mode) {
         while((nextChar = fgetc(fp)) != EOF && (nextChar == ' ' || nextChar == '\n' || nextChar == '\r'));
 
         if (nextChar != EOF) {
-            printf("===\n");
+            printf("============================\n\n");
             fseek(fp, currentPos, SEEK_SET); // 위치 복구
         }
     }
