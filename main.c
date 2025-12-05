@@ -152,7 +152,7 @@ void dijkstra(int startNode) {
         for (int v = 1; v <= n; v++) {
             if (adjMatrix[u][v] != 0) { // 간선이 존재하면 (가중치 > 0)
                 // 중요: 경로 길이가 작을 경우(<)에만 갱신
-                if (dist[u] + adjMatrix[u][v] < dist[v]) {
+                if ((long long)dist[u] + adjMatrix[u][v] < dist[v]) { // 오버플로우 방지를 위해 long long 비교
                     dist[v] = dist[u] + adjMatrix[u][v];
                     parent[v] = u;
                 }
@@ -163,10 +163,10 @@ void dijkstra(int startNode) {
     // 결과 출력
     printf("시작점: %d\n", startNode);
     for (int i = 2; i <= n; i++) { // 1번은 시작점이므로 제외하고 2번부터 출력
+        printf("정점 [%d]: ", i);
         if (dist[i] == INF) {
-             // 연결되지 않은 경우 (문제 조건상 단순 연결 그래프라 발생 안할 수 있음)
+             printf("도달 불가능 (경고: 비연결 그래프)\n"); // 🔴 경고 메시지 추가
         } else {
-            printf("정점 [%d]: ", i);
             printPath(parent, i);
             printf(", 길이: %d\n", dist[i]);
         }
@@ -185,9 +185,8 @@ void processFile(const char* filename, int mode) {
     int graphCount = 1;
 
     // 파일에서 그래프 개수 및 데이터 읽기
-    // 첫 번째 숫자는 정점의 개수 N
     while (fscanf(fp, "%d", &n) != EOF) {
-        // 줄바꿈 문자 소진 (fscanf 뒤에는 개행문자가 버퍼에 남음)
+        // 줄바꿈 문자 소진
         fgetc(fp);
 
         resetGraph();
